@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Management System</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+          font-family: system-ui, sans-serif;
+          background: #f5f5f5;
+          color: #1a1a1a;
+          min-height: 100vh;
+          padding: 2rem 1rem;
+        }
+
+        h1 {
+          font-size: 22px;
+          font-weight: 500;
+          margin-bottom: 2rem;
+          text-align: center;
+          color: #1a1a1a;
+        }
+
+        .container {
+          max-width: 700px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        .card {
+          background: #fff;
+          border-radius: 12px;
+          border: 0.5px solid #ddd;
+          padding: 1.25rem;
+        }
+
+        .card h2 {
+          font-size: 15px;
+          font-weight: 500;
+          margin-bottom: 1rem;
+          color: #1a1a1a;
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          margin-bottom: 0.8rem;
+        }
+
+        label {
+          font-size: 13px;
+          color: #666;
+        }
+
+        input {
+          padding: 8px 12px;
+          border: 0.5px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+          outline: none;
+          width: 100%;
+          transition: border-color 0.15s;
+        }
+
+        input:focus { border-color: #378add; box-shadow: 0 0 0 3px rgba(55,138,221,0.12); }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 16px;
+          border-radius: 8px;
+          border: 0.5px solid #bbb;
+          background: #fff;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background 0.15s;
+          color: #1a1a1a;
+        }
+
+        .btn:hover { background: #f0f0f0; }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-danger {
+          border-color: #f09595;
+          color: #a32d2d;
+        }
+        .btn-danger:hover { background: #fcebeb; }
+
+        .btn-primary {
+          background: #1a1a1a;
+          color: #fff;
+          border-color: #1a1a1a;
+        }
+        .btn-primary:hover { background: #333; }
+
+        .result-box {
+          margin-top: 1rem;
+          padding: 0.8rem 1rem;
+          border-radius: 8px;
+          font-size: 13px;
+          display: none;
+        }
+
+        .result-box.success { background: #eaf3de; color: #3b6d11; border: 0.5px solid #97c459; }
+        .result-box.error   { background: #fcebeb; color: #a32d2d; border: 0.5px solid #f09595; }
+        .result-box.info    { background: #e6f1fb; color: #185fa5; border: 0.5px solid #85b7eb; }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          margin-top: 0.5rem;
+        }
+
+        th {
+          text-align: left;
+          padding: 8px 10px;
+          border-bottom: 0.5px solid #ddd;
+          color: #666;
+          font-weight: 500;
+        }
+
+        td {
+          padding: 8px 10px;
+          border-bottom: 0.5px solid #f0f0f0;
+          color: #1a1a1a;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .empty-state {
+          text-align: center;
+          color: #999;
+          padding: 1.5rem 0;
+          font-size: 13px;
+        }
+
+        .row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .row .form-group { flex: 1; min-width: 140px; }
+    </style>
+</head>
+<body>
+
+<h1>Book management</h1>
+
+<div class="container">
+
+    <!-- Upload / Update Book -->
+    <div class="card">
+        <h2>Add or update book</h2>
+        <div class="row">
+            <div class="form-group">
+                <label>Book number</label>
+                <input type="number" id="upBookNumber" placeholder="101" />
+            </div>
+            <div class="form-group">
+                <label>Book name</label>
+                <input type="text" id="upBookName" placeholder="Clean Code" />
+            </div>
+            <div class="form-group">
+                <label>Author</label>
+                <input type="text" id="upAuthor" placeholder="Robert Martin" />
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="uploadBook()">Save book</button>
+        <div class="result-box" id="uploadResult"></div>
+    </div>
+
+    <!-- Get Book by ID -->
+    <div class="card">
+        <h2>Find book by number</h2>
+        <div class="form-group">
+            <label>Book number</label>
+            <input type="number" id="searchId" placeholder="101" />
+        </div>
+        <button class="btn" onclick="getBookById()">Search</button>
+        <div class="result-box" id="searchResult"></div>
+    </div>
+
+    <!-- Delete Book -->
+    <div class="card">
+        <h2>Delete book</h2>
+        <div class="form-group">
+            <label>Book number</label>
+            <input type="number" id="deleteId" placeholder="101" />
+        </div>
+        <button class="btn btn-danger" onclick="deleteBook()">Delete</button>
+        <div class="result-box" id="deleteResult"></div>
+    </div>
+
+    <!-- All Books -->
+    <div class="card">
+        <h2>All books</h2>
+        <button class="btn" onclick="getAllBooks()">Load all books</button>
+        <div id="allBooksContainer" style="margin-top:1rem;"></div>
+    </div>
+
+</div>
+
+<script>
+    const BASE = "http://localhost:8088/BookManagement_Jersey/api/books";
+
+     function showResult(id, message, type) {
+       const el = document.getElementById(id);
+       el.textContent = message;
+       el.className = "result-box " + type;
+       el.style.display = "block";
+     }
+
+     async function uploadBook() {
+       const body = {
+  bookNumber: parseInt(document.getElementById("upBookNumber").value),
+  bookName:   document.getElementById("upBookName").value.trim(),
+  author:     document.getElementById("upAuthor").value.trim()
+};
+
+      if (!body.bookNumber || !body.bookName || !body.author) {
+         showResult("uploadResult", "Fill in all fields before saving.", "error");
+         return;
+       }
+
+       try {
+         const res = await fetch(`${BASE}/uploadbookbyid`, {
+           method: "PUT",
+           headers: { "Content-Type": "application/json", "Accept": "application/json" },
+           body: JSON.stringify(body)
+         });
+         if (res.ok) {
+           showResult("uploadResult", `Book ${body.bookNumber} saved successfully.`, "success");
+         } else {
+           showResult("uploadResult", `Server returned ${res.status}.`, "error");
+         }
+       } catch (e) {
+         showResult("uploadResult", "Could not reach the server. Is Tomcat running?", "error");
+       }
+     }
+
+     async function getBookById() {
+       const id = document.getElementById("searchId").value;
+       if (!id) { showResult("searchResult", "Enter a book number.", "error"); return; }
+
+       try {
+         const res = await fetch(`${BASE}/onebook/${id}`, {
+           headers: { "Accept": "application/json" }
+         });
+         if (res.status === 204 || res.status === 404) {
+           showResult("searchResult", `No book found with number ${id}.`, "info");
+           return;
+         }
+         const book = await res.json();
+        showResult("searchResult",
+  `#${book.bookNumber} — ${book.bookName} by ${book.author}`, "success");
+       } catch (e) {
+         showResult("searchResult", "Could not reach the server. Is Tomcat running?", "error");
+       }
+     }
+
+     async function deleteBook() {
+       const id = document.getElementById("deleteId").value;
+       if (!id) { showResult("deleteResult", "Enter a book number.", "error"); return; }
+
+       try {
+         const res = await fetch(`${BASE}/delete/${id}`, { method: "DELETE" });
+         if (res.ok) {
+           showResult("deleteResult", `Book ${id} deleted.`, "success");
+         } else {
+           showResult("deleteResult", `No book found with number ${id}.`, "info");
+         }
+       } catch (e) {
+         showResult("deleteResult", "Could not reach the server. Is Tomcat running?", "error");
+       }
+     }
+
+     async function getAllBooks() {
+       const container = document.getElementById("allBooksContainer");
+       container.innerHTML = "<p style='font-size:13px;color:#999;'>Loading...</p>";
+
+       try {
+         const res = await fetch(`${BASE}/Allbooks`, {
+           headers: { "Accept": "application/json" }
+         });
+         const books = await res.json();
+
+         if (!books || books.length === 0) {
+           container.innerHTML = "<p class='empty-state'>No books found in the database.</p>";
+           return;
+         }
+
+         let html = `<table>
+           <thead><tr><th>#</th><th>Name</th><th>Author</th></tr></thead><tbody>`;
+         books.forEach(b => {
+          html += `<tr>
+  <td>${b.bookNumber}</td>
+  <td>${b.bookName}</td>
+  <td>${b.author}</td>
+</tr>`;
+         });
+         html += "</tbody></table>";
+         container.innerHTML = html;
+       } catch (e) {
+         container.innerHTML = "<p class='empty-state' style='color:#a32d2d;'>Could not reach the server. Is Tomcat running?</p>";
+       }
+     }
+</script>
+
+</body>
+</html>

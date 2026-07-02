@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+ http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.example</groupId>
+  <artifactId>Jersey_Demo</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <properties>
+    <jersey.version>3.1.3</jersey.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+  <dependencies>
+    <!-- Jersey JAX-RS Server -->
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <!-- Jersey HK2 Injection -->
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <!-- JSON support (Jackson) -->
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <!-- XML support (JAXB) -->
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-jaxb</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <!-- JAXB Runtime -->
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>4.0.4</version>
+    </dependency>
+    <!-- JAXB API -->
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>4.0.0</version>
+    </dependency>
+    <!-- MySQL -->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.3.0</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <finalName>Jersey_Demo</finalName>
+  </build>
+</project>
+
